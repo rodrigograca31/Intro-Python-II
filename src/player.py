@@ -8,11 +8,15 @@ class Player:
         self.name = name
         self.current_room = room
         self.inventory = []
+        self.score = 0
 
     def __str__(self):
         return (
             self.name
-            + " is at: "
+            + " has "
+            + str(self.score)
+            + " score"
+            + " and is at: "
             + self.current_room.name
             + ", "
             + self.current_room.description
@@ -24,6 +28,7 @@ class Player:
         # if this direction property is not None
         if self.current_room[f"{direction}_to"] != None:
             self.current_room = self.current_room[f"{direction}_to"]
+            self.score += 1
         else:
             print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
 

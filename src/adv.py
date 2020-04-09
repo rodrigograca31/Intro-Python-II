@@ -1,8 +1,10 @@
+import random
 from room import Room
 from item import Item
 from player import Player
 from colored import fg, bg, attr
 import os
+from lightsource import LightSource
 
 
 def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
@@ -34,12 +36,15 @@ to north. The smell of gold permeates the air.""",
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""",
     ),
+    "corona": Room("Streets", "Corona virus infested streets 👑🦠🛣️,\nPlease use a mask 😷", True),
+    "city": Room("City", "Corona virus infested city 👑🦠🏙️, \nPlease use a mask 😷", True),
 }
 
 
 # # Link rooms together
 
 room["outside"].n_to = room["foyer"]
+room["outside"].s_to = room["corona"]
 room["foyer"].s_to = room["outside"]
 room["foyer"].n_to = room["overlook"]
 room["foyer"].e_to = room["narrow"]
@@ -47,10 +52,17 @@ room["overlook"].s_to = room["foyer"]
 room["narrow"].w_to = room["foyer"]
 room["narrow"].n_to = room["treasure"]
 room["treasure"].s_to = room["narrow"]
+room["corona"].s_to = room["city"]
 
 
 room["outside"].items.append(Item("sword", "Long Sword"))
 room["outside"].items.append(Item("coins", "Gold Coins"))
+
+
+# Gets random room and puts the torch there
+key, random_room = random.choice(list(room.items()))
+random_room.items.append(LightSource("torch", "Torch"))
+
 
 #
 # Main
@@ -106,6 +118,8 @@ while option != "q":
     if option in ["n", "s", "w", "e"]:
         player.move(option)
     if option == "l":
+        if not player.current_room.is_light:
+            print("It's pitch black!")
         if len(player.current_room.items):
             print("%sYou see: %s%s" %
                   (fg(2), player.current_room.items, attr(0)))

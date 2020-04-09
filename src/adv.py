@@ -1,4 +1,12 @@
 from room import Room
+from item import Item
+from player import Player
+from colored import fg, bg, attr
+import os
+
+
+def clear(): return os.system('cls' if os.name == 'nt' else 'clear')
+
 
 # Declare all the rooms
 
@@ -40,13 +48,16 @@ room["narrow"].w_to = room["foyer"]
 room["narrow"].n_to = room["treasure"]
 room["treasure"].s_to = room["narrow"]
 
+
+room["outside"].items.append(Item("sword", "Long Sword"))
+room["outside"].items.append(Item("coins", "Gold Coins"))
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
 
-from player import Player
 
 player = Player("Rodrigo", room["outside"])
 
@@ -62,17 +73,22 @@ player = Player("Rodrigo", room["outside"])
 # If the user enters "q", quit the game.
 
 
-print("Lets play a game?\n")
+print("Lets play a game?")
 
 
-def options():
+def menu():
+    print()
     print(player)
-    print("Where do you wanna go next?")
+    print("Where do you wanna go next? 🤔")
     print("Choose one:")
-    print("\tn: Move north ⬆️")
-    print("\ts: Move south ⬇️")
-    print("\tw: Move west ⬅️")
-    print("\te: Move down ➡️")
+    print("\tn: Move north 👆")
+    print("\ts: Move south 👇")
+    print("\tw: Move west 👈")
+    print("\te: Move down 👉")
+    print("\ti: See inventory 👜")
+    print("\tl: Look around 👀")
+    print(" get Item: Pick up stuff ⛏️")
+    print("drop Item: Drop stuff 💧")
     print("\tq: Exit 🚪🚶")
     print()
 
@@ -80,11 +96,31 @@ def options():
 option = None
 
 while option != "q":
-    options()
+    menu()
 
     option = str(input("Whats gonna be? "))
-    if option != "q":
+    print()
+
+    clear()
+
+    if option in ["n", "s", "w", "e"]:
         player.move(option)
+    if option == "l":
+        if len(player.current_room.items):
+            print("%sYou see: %s%s" %
+                  (fg(2), player.current_room.items, attr(0)))
+        else:
+            print("%sYou see nothing 👁️%s" %
+                  (fg(2), attr(0)))
+    if option == "i" or option == "inventory":
+        print("%sYour inventory: %s%s" % (fg(11), player.inventory, attr(0)))
+
+    if option.count(" "):
+        options = option.split()
+        if options[0] == "get" or options[0] == "take":
+            player.pickItem(options[1])
+        if options[0] == "drop":
+            player.dropItem(options[1])
 
 
-print("The end")
+print("The end\n")

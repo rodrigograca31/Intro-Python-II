@@ -7,11 +7,11 @@ class Player:
     def __init__(self, name, room):
         self.name = name
         self.current_room = room
+        self.inventory = []
 
     def __str__(self):
         return (
-            "\n"
-            + self.name
+            self.name
             + " is at: "
             + self.current_room.name
             + ", "
@@ -42,3 +42,29 @@ class Player:
                 self.current_room = self.current_room.e_to
             else:
                 print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+
+    def pickItem(self, item_name):
+
+        item = [x for i, x in enumerate(
+            self.current_room.items) if x.name == item_name]
+
+        if item:
+            self.inventory.append(item[0])
+            self.current_room.items.remove(item[0])
+            item[0].on_take()
+        else:
+            print("%sThere's no item on the ground called: %s%s" %
+                  (fg(1), item_name, attr(0)))
+
+    def dropItem(self, item_name):
+
+        item = [x for i, x in enumerate(
+            self.inventory) if x.name == item_name]
+
+        if item:
+            self.current_room.items.append(item[0])
+            self.inventory.remove(item[0])
+            item[0].on_drop()
+        else:
+            print("%sThere's no item in your inventory called: %s%s" %
+                  (fg(1), item_name, attr(0)))

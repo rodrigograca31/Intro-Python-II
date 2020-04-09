@@ -13,3 +13,6 @@ class Room:
         self.e_to = None
 
         self.items = []
+
+    def __getitem__(self, arg):
+        return getattr(self, arg)

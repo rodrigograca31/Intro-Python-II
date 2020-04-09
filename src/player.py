@@ -20,28 +20,33 @@ class Player:
         )
 
     def move(self, direction):
-        # self.room = room
 
-        if direction == "n":
-            if self.current_room.n_to:
-                self.current_room = self.current_room.n_to
-            else:
-                print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
-        elif direction == "s":
-            if self.current_room.s_to:
-                self.current_room = self.current_room.s_to
-            else:
-                print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
-        elif direction == "w":
-            if self.current_room.w_to:
-                self.current_room = self.current_room.w_to
-            else:
-                print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
-        elif direction == "e":
-            if self.current_room.e_to:
-                self.current_room = self.current_room.e_to
-            else:
-                print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+        # if this direction property is not None
+        if self.current_room[f"{direction}_to"] != None:
+            self.current_room = self.current_room[f"{direction}_to"]
+        else:
+            print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+
+        # if direction == "n":
+        #     if self.current_room.n_to:
+        #         self.current_room = self.current_room.n_to
+        #     else:
+        #         print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+        # elif direction == "s":
+        #     if self.current_room.s_to:
+        #         self.current_room = self.current_room.s_to
+        #     else:
+        #         print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+        # elif direction == "w":
+        #     if self.current_room.w_to:
+        #         self.current_room = self.current_room.w_to
+        #     else:
+        #         print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
+        # elif direction == "e":
+        #     if self.current_room.e_to:
+        #         self.current_room = self.current_room.e_to
+        #     else:
+        #         print("%sYou can't go in that direction %s" % (fg(1), attr(0)))
 
     def pickItem(self, item_name):
 

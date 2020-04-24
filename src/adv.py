@@ -36,7 +36,7 @@ to north. The smell of gold permeates the air.""",
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""",
     ),
-    "corona": Room("Streets", "Corona virus infested streets 👑🦠🛣️,\nPlease use a mask 😷", True),
+    "streets": Room("Streets", "Corona virus infested streets 👑🦠🛣️,\nPlease use a mask 😷", True),
     "city": Room("City", "Corona virus infested city 👑🦠🏙️, \nPlease use a mask 😷", True),
 }
 
@@ -44,7 +44,7 @@ earlier adventurers. The only exit is to the south.""",
 # # Link rooms together
 
 room["outside"].n_to = room["foyer"]
-room["outside"].s_to = room["corona"]
+room["outside"].s_to = room["streets"]
 room["foyer"].s_to = room["outside"]
 room["foyer"].n_to = room["overlook"]
 room["foyer"].e_to = room["narrow"]
@@ -52,7 +52,9 @@ room["overlook"].s_to = room["foyer"]
 room["narrow"].w_to = room["foyer"]
 room["narrow"].n_to = room["treasure"]
 room["treasure"].s_to = room["narrow"]
-room["corona"].s_to = room["city"]
+room["streets"].s_to = room["city"]
+room["streets"].n_to = room["outside"]
+room["city"].n_to = room["streets"]
 
 
 room["outside"].items.append(Item("sword", "Long Sword"))

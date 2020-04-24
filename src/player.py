@@ -15,7 +15,7 @@ class Player:
             self.name
             + " has "
             + str(self.score)
-            + " score"
+            + " points"
             + " and is at: "
             + self.current_room.name
             + ", "
